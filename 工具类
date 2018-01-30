@@ -1,0 +1,103 @@
+1 反射工作
+
+ClassUtils：
+        // 获取Test类所有实现的接口
+      ClassUtils.getAllInterfaces(Test.class);
+
+      // 获取Test类所有父类
+      ClassUtils.getAllSuperclasses(Test.class);
+
+      // 获取Test类所在的包名
+      ClassUtils.getPackageName(Test.class);
+
+      // 获取Test类简单类名
+      ClassUtils.getShortClassName(Test.class);
+
+      // 判断是否可以转型
+      ClassUtils.isAssignable(Test.class, Object.class);
+
+      // 判断是否有内部类
+      ClassUtils.isInnerClass(Test.class);
+      
+ConstructorUtils：
+      // 获取参数为String的构造函数
+      ConstructorUtils.getAccessibleConstructor(Test.class, String.class);
+
+     // 执行参数为String的构造函数
+     Test test = (Test) ConstructorUtils.invokeConstructor(Test.class,
+        "Hello");
+MethodUtils：
+        // 调用无参方法
+        Test test = new Test();
+        MethodUtils.invokeMethod(test, "publicHello", null);
+
+        // 调用一参方法
+        MethodUtils.invokeMethod(test, "publicHello", "Hello");
+
+        // 调用多参方法
+        MethodUtils.invokeMethod(test, "publicHello", new Object[] { "100",
+          new Integer(10) });
+
+        // 调用静态方法
+        MethodUtils.invokeStaticMethod(Test.class, "staticHello", null);
+  
+  FieldUtils：
+          Test test = new Test("1", "Ray", "hello");
+            // 以下两个方法完全一样,都能获取共有或私有变量,因为第三个参数都设置了不检查
+            FieldUtils.getDeclaredField(Test.class, "username", true);
+            FieldUtils.getField(Test.class, "username", true);
+
+            // 读取私有或公共变量的值
+            FieldUtils.readField(test, "username", true);
+
+            // 读取静态变量
+            FieldUtils.readStaticField(Test.class, "STATIC_FIELD");
+
+            // 写入私有或共有变量
+            FieldUtils.writeField(test, "username", "RayRay", true);
+
+            // 写入静态变量
+            FieldUtils.writeStaticField(Test.class, "STATIC_FIELD", "static_value");
+            
+   NumberUtils  and  RandomUtils ：
+           很多情况下我们都需要将字符串转换为数字,或判断字符串是否是数字等等操作,NumberUtils帮助我们方便的从字符串转换为数字,
+           在不使用NumberUtils情况下, 若然字符串值不是数字,使用Integer.parseInt()时会报出java.lang.NumberFormatException,
+           但在NumberUtils的情况下,只会返回0而不产生错误
+           
+            String str = "12.7";
+          /*
+           * org.apache.commons.lang.NumberUtils已经被弃用,
+           * 注意要引入org.apache.commons.lang.math.NumberUtils
+           */
+
+          // 判断字符串是否为整数
+          NumberUtils.isDigits(str);
+          // 判断字符串是否为数字
+          NumberUtils.isNumber(str);
+          // 获取参数中最大的值,支持传入数组
+          NumberUtils.max(10, 20, 30);
+          // 获取参数中最小的值,支持传入数组
+          NumberUtils.min(10, 20, 30);
+          // 将字符串转换为int类型,支持float,long,short等数值类型
+          NumberUtils.toInt(str);
+          // 通过字符串创建BigDecimal类型 ,支持int,float,long等数值
+          NumberUtils.createBigDecimal(str);
+          /
+           * RandomUtils帮助我们产生随机数,不止是数字类型 , 
+           * 连boolean类型都可以通过RandomUtils产生
+           */
+          RandomUtils.nextBoolean();
+          RandomUtils.nextDouble();
+          RandomUtils.nextLong();
+          // 注意这里传入的参数不是随机种子,而是在0~1000之间产生一位随机数
+          RandomUtils.nextInt(1000);
+          
+        读者在使用时可能会发现,MethodUtils和ConstructUtils在org.apache.commons.lang.reflect和org.apache.commons.beanutils都存在,
+        但FieldUtils和ClassUtils只在reflect当中存在,因为beanutils提供了另外一种名为PropertyUtils的对属性存取更为方便的工具,
+        但PropertyUtils不能获取传统反射的Field对象,笔者建议MethodUtils和ConstructUtils应该倾向使用beanutils,
+        因为beanutils就是为反射而存在,更专业(虽然提供的方法几乎一样),而使用ClassUtils和要获取传统的Field对象时使用reflect中的FieldUtils 
+        总结: 
+              commons工具包很多开源组织都有提供,例如google,spring,apache都有各自的工具包,有众多的选择,
+              但最终的目的只是为了方便我们程序的开发和维护,简化我们编写一些常用的逻辑,提升我们开发的效率,从而达到活在开源,善用开源           
+          
+          
