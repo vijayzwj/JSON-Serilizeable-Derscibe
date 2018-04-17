@@ -40,6 +40,34 @@ public static final Object toJSON(Object javaObject); 将JavaBean转换为JSONOb
 	SimplePropertyPreFilter filter = new SimplePropertyPreFilter("age");
 		
     String jsonString = JSON.toJSONString(mapList, filter);
+    
+    
+  ---------------------------------------------------------------------------------------------------------------  
+    
+    public final ObjectMapper mapper = new ObjectMapper(); 
+     
+    public static void main(String[] args) throws Exception{  
+        JavaType javaType = getCollectionType(ArrayList.class, YourBean.class); 
+        List<YourBean> lst =  (List<YourBean>)mapper.readValue(jsonString, javaType); 
+    }   
+       /**   
+        * 获取泛型的Collection Type  
+        * @param collectionClass 泛型的Collection   
+        * @param elementClasses 元素类   
+        * @return JavaType Java类型   
+        * @since 1.0   
+        */   
+    public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
+        return mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
+    }
+
+
+
+json--->List<Bean>
+getTypeFactory().constructParametricType(List.class, YourBean.class);
+
+json--->HashMap<String,YourBean>
+getTypeFactory().constructParametricType(HashMap.class,String.class, YourBean.class);
 
     
 
